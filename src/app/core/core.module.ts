@@ -1,3 +1,3 @@
-/**
- * Created by Dmytro on 25.03.2017.
- */
+export default function testClass () {
+  console.log('HELLO WORLD');
+}

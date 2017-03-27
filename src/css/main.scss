@@ -1,0 +1,13 @@
+@import 'module/main2';
+.test_1 {
+  display: flex;
+  &._dev {
+    justify-content: space-around;
+  }
+}
+
+body {
+  background: #ccc;
+  color: #fff;
+  font-size: 22px;
+}

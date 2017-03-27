@@ -1,3 +1,3 @@
-/**
- * Created by Dmytro on 25.03.2017.
- */
+import testClass from './core/core.module';
+import testClass from './core/1;
+  console.log('IAM HEREEEE');
