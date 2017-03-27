@@ -6,11 +6,13 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 console.log('[NODE_ENV] is', process.env.NODE_ENV);
 
 module.exports = {
+  context: path.resolve(__dirname),
   entry: {
     main: config.path.src + config.dir.app + 'app.ts',
   },
   output: {
-    publicPath: path.resolve(__dirname, config.path.dev + config.dir.js),
+    publicPath: path.resolve(__dirname, `${config.path.dev}`),
+    path: path.resolve(__dirname, `${config.path.dev + config.dir.js}`),
     filename: (process.env.NODE_ENV === 'development') ? '[name].bundle.js' : '[name].min.js',
     pathinfo: false,
     library: '[name]',
@@ -30,7 +32,7 @@ module.exports = {
     modules: [
       'node_modules',
       'bower_components',
-      path.resolve(__dirname, config.path.src + config.dir.app),
+      path.resolve(__dirname, `${config.path.src + config.dir.app}`),
     ],
     descriptionFiles: ['package.json', 'bower.json'],
     extensions: ['.js', '.ts', '.tsx', '.json'],

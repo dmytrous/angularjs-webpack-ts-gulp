@@ -1,3 +1,3 @@
 import testClass from './core/core.module';
-import testClass from './core/1;
-  console.log('IAM HEREEEE');
+console.log('IAM HEREEE and HERE WEBPACK');
+testClass();

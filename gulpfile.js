@@ -1,12 +1,11 @@
 const path = require('path');
 const config = require('./gulp.config')();
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const $ = require('gulp-load-plugins')({ lazy: true });
 const webpack = require('webpack');
 const gulpWebpack = require('gulp-webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
 const del = require('del');
-const sass = require('gulp-sass');
 const runSequence = require('run-sequence');
 const browserSync = require('browser-sync');
 const chokidar = require('chokidar');
@@ -24,7 +23,17 @@ const chokidar = require('chokidar');
 // Scripts task
 gulp.task('webpack', () => {
   return gulp.src(config.path.src)
-      .pipe(gulpWebpack(require('./webpack.config.js'), webpack, () => {
+      .pipe(gulpWebpack(require('./webpack.config.js'), webpack, (err, stats) => {
+        if(err)  {
+          throw new gutil.PluginError("webpack", err);
+        }
+
+        gutil.log("[webpack]", stats.toString({
+          colors: true,
+          chunks: false,
+          errorDetails: true
+        }));
+
         process.env.NODE_ENV = 'development' ? browserSync.reload() : false;
       }))
       .pipe(gulp.dest(`${config.path.dev}${config.dir.js}`));
@@ -74,26 +83,13 @@ gulp.task('serve', () => {
     return;
   };
 
-  let compiler = require('webpack');
-  let webpackConfig = require('./webpack.config');
+  // let compiler = require('webpack');
+  // let config = require('./webpack.config');
 
   browserSync.init({
     server: './dev',
     port: 3004,
     open: false,
-    middleware: [
-      webpackDevMiddleware(compiler, {
-        // IMPORTANT: dev middleware can't access config, so we should
-        // provide publicPath by ourselves
-        publicPath: webpackConfig.output.publicPath,
-
-        // pretty colored output
-        stats: { colors: true }
-
-        // for other settings see
-        // http://webpack.github.io/docs/webpack-dev-middleware.html
-      }),
-    ],
   });
 });
 
@@ -115,44 +111,12 @@ gulp.task('watch:css', () => {
       });
 });
 
-gulp.task('watch:js', () => {
-  return chokidar.watch(`${config.path.dev}${config.dir.js}**/*.*.js`)
-      .on('change', () => {
-          console.log('RELLLL')
-      });
-});
-
-// gulp.task('watch:dev', () => {
-//   chokidar.watch(`${config.path.src}${config.dir.css}**/*.scss`)
-//       .on('change', () => {
-//         gulp.run('css:compile');
-//         browserSync.reload();
-//       });
-//   gulp.watch(`${config.path.dev}${config.dir.js}main.bundle.js`, () => {
-//     browserSync.reload();
-//
-//   });
-//   chokidar.watch(`${config.path.src}*.html`)
-//       .on('change', () => {
-//         gulp.run('html');
-//         browserSync.reload();
-//       });
-// });
-
-// gulp.task('watch:js', () => {
-//   chokidar.watch(`./dev/js/main.bundle.js`)
-//       .on('change', () => {
-//         console.log('SUKA');
-//         browserSync.reload();
-//       });
-// });
-
 // Common Tasks
 gulp.task('dev', ['clean:dev'],
     () => {
   runSequence(
       ['set:dev'],
-      ['html', 'css:compile', 'webpack', 'serve', 'watch:css', 'watch:html', 'watch:js']
+      ['html', 'css:compile', 'webpack', 'serve', 'watch:css', 'watch:html']
   );
 });
 
