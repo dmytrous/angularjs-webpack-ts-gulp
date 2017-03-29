@@ -24,14 +24,14 @@ const chokidar = require('chokidar');
 gulp.task('webpack', () => {
   return gulp.src(config.path.src)
       .pipe(gulpWebpack(require('./webpack.config.js'), webpack, (err, stats) => {
-        if(err)  {
-          throw new gutil.PluginError("webpack", err);
+        if (err) {
+          throw new gutil.PluginError('webpack', err);
         }
 
-        gutil.log("[webpack]", stats.toString({
+        gutil.log('[webpack]', stats.toString({
           colors: true,
           chunks: false,
-          errorDetails: true
+          errorDetails: true,
         }));
 
         process.env.NODE_ENV = 'development' ? browserSync.reload() : false;
@@ -41,7 +41,7 @@ gulp.task('webpack', () => {
 
 // HTML
 gulp.task('html', () => {
-  return gulp.src(`${config.path.src}**/*.html`)
+  return gulp.src([`${config.path.src}*.html`])
       .pipe(gulp.dest(config.path.dev));
 });
 
@@ -68,6 +68,7 @@ gulp.task('clean:dev', () => {
   del.sync(config.path.dev);
 });
 
+//SET environment variable
 gulp.task('set:dev', () => {
   return process.env.NODE_ENV = 'development';
 });
@@ -76,18 +77,18 @@ gulp.task('set:prod', () => {
   return process.env.NODE_ENV = 'production';
 });
 
-// Static Server + watching scss/html files
+// Development server
 gulp.task('serve', () => {
 
   if (process.env.NODE_ENV !== 'development') {
     return;
-  };
-
-  // let compiler = require('webpack');
-  // let config = require('./webpack.config');
+  }
 
   browserSync.init({
-    server: './dev',
+    startPath: 'index.html',
+    server: {
+      baseDir: './dev',
+    },
     port: 3004,
     open: false,
   });
@@ -98,7 +99,7 @@ gulp.task('browser:reload', () => {
 });
 
 gulp.task('watch:html', () => {
-  return chokidar.watch(`${config.path.src}*.html`)
+  return chokidar.watch(`${config.path.src}**/*.html`)
       .on('change', () => {
         runSequence('html', 'browser:reload');
       });
@@ -114,9 +115,9 @@ gulp.task('watch:css', () => {
 // Common Tasks
 gulp.task('dev', ['clean:dev'],
     () => {
-  runSequence(
-      ['set:dev'],
-      ['html', 'css:compile', 'webpack', 'serve', 'watch:css', 'watch:html']
-  );
-});
+      runSequence(
+          ['set:dev'],
+          ['html', 'css:compile', 'webpack', 'serve', 'watch:css', 'watch:html']
+      );
+    });
 

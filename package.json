@@ -6,6 +6,7 @@
   "repository": "https://github.com/angular/angular-seed",
   "license": "MIT",
   "devDependencies": {
+    "awesome-typescript-loader": "^3.1.2",
     "bower": "^1.7.7",
     "browser-sync": "^2.18.8",
     "chokidar": "^1.6.1",
@@ -17,7 +18,12 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-webpack": "^1.5.0",
+    "html-loader": "^0.4.5",
+    "ng-cache-loader": "0.0.23",
+    "ng-include-loader": "^1.0.1",
+    "required-loader": "^1.2.11",
     "run-sequence": "^1.2.2",
+    "typescript": "^2.2.1",
     "uglifyjs-webpack-plugin": "^0.3.1",
     "webpack": "^2.3.2",
     "webpack-dev-middleware": "^1.10.1"
@@ -36,5 +42,8 @@
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js",
     "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+  },
+  "dependencies": {
+    "@types/angular": "^1.6.10"
   }
 }

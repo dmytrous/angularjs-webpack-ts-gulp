@@ -1,12 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" ng-app="app">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>My HTML File</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
- SOME text here IT WORKS YEAHh
- <script src="/js/main.bundle.js"></script>
+
+<div ng-controller="MyCtrl">
+    Hello {{greetMe}}!
+    <ul>
+        <li ng-repeat="phone in phones">
+            <span>{{phone.name}}</span>
+            <p>{{phone.snippet}}</p>
+        </li>
+    </ul>
+</div>
+
+<div ng-include="'include.tpl.html'"></div>
+
+<p>Nothing here {{'yet' + '!'}}</p>
+
+<phone-list name="'grgrgr'" test="'Some test text without expression'"></phone-list>
+
+<script src="/js/main.bundle.js"></script>
 </body>
 </html>

@@ -10,6 +10,9 @@ module.exports = function () {
       js: 'js/',
       css: 'css/',
     },
+    entry: {
+      main: 'app.ts',
+    },
   };
   return config;
 };

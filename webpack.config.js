@@ -8,7 +8,7 @@ console.log('[NODE_ENV] is', process.env.NODE_ENV);
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    main: config.path.src + config.dir.app + 'app.ts',
+    main: config.path.src + config.dir.app + config.entry.main,
   },
   output: {
     publicPath: path.resolve(__dirname, `${config.path.dev}`),
@@ -21,8 +21,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: '/\.tsx?&/',
-        use: ['awesome-typescript-loader'],
+        test: /\.tsx?$/,
+        loader: ['awesome-typescript-loader'],
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
+      {
+        test: /\.html$/,
+        loader: ['ng-cache-loader'],
       },
     ],
   },
@@ -33,9 +41,10 @@ module.exports = {
       'node_modules',
       'bower_components',
       path.resolve(__dirname, `${config.path.src + config.dir.app}`),
+      path.resolve(__dirname, `${config.path.dev}`),
     ],
     descriptionFiles: ['package.json', 'bower.json'],
-    extensions: ['.js', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 
   /**Watch options*/
@@ -54,5 +63,3 @@ module.exports = {
   ],
 
 };
-
-//TODO: think about production for example pathinfo: false. Think about Common chunks.

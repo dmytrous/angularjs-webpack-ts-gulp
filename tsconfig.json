@@ -3,6 +3,9 @@
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "allowJs": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -14,6 +17,9 @@
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true
   },
+  "include": [
+    "./src/app/**/*.d.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
